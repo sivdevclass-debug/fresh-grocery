@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Shop - FreshGrocery{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="shop-header">
+        <h1><i class="bi bi-basket3"></i> Fresh Grocery Store</h1>
+        <p>Stock up on farm-fresh groceries at great prices</p>
+    </div>
+
+    <div class="category-filter">
+        {% for c in categories %}
+            <a href="{{ url_for('shop', category=c) }}" class="cat-btn {% if c == active %}active{% endif %}">{{ c }}</a>
+        {% endfor %}
+    </div>
+
+    <div class="products-grid">
+        {% for p in products %}
+        <div class="product-card">
+            <div class="product-emoji">{{ p.emoji }}</div>
+            <h3 class="product-name">{{ p.name }}</h3>
+            <p class="product-desc">{{ p.description }}</p>
+            <div class="product-footer">
+                <span class="product-price">${{ "%.2f"|format(p.price) }}</span>
+                <form action="{{ url_for('add_to_cart', pid=p.id) }}" method="post">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn-add">
+                        <i class="bi bi-plus-lg"></i> Add
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

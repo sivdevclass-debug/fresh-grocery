@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Register - FreshGrocery{% endblock %}
+{% block content %}
+<div class="container auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-logo">🥕</div>
+            <h1>Create Account</h1>
+            <p>Join FreshGrocery for fresh groceries</p>
+        </div>
+        <form method="post">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+            <div class="form-group">
+                <label for="username"><i class="bi bi-person"></i> Username</label>
+                <input type="text" id="username" name="username" placeholder="Choose a username" autocomplete="username" required autofocus>
+            </div>
+            <div class="form-group">
+                <label for="email"><i class="bi bi-envelope"></i> Email</label>
+                <input type="email" id="email" name="email" placeholder="your@email.com" autocomplete="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password"><i class="bi bi-lock"></i> Password</label>
+                <input type="password" id="password" name="password" placeholder="Min 8 chars, upper/lower/digit" autocomplete="new-password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm"><i class="bi bi-lock-fill"></i> Confirm Password</label>
+                <input type="password" id="confirm" name="confirm" placeholder="Re-enter password" autocomplete="new-password" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">Create Account <i class="bi bi-arrow-right"></i></button>
+        </form>
+        <div class="auth-footer">
+            <p>Already have an account? <a href="{{ url_for('login') }}">Sign in here</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

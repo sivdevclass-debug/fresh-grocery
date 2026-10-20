@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Cart - FreshGrocery{% endblock %}
+{% block content %}
+<div class="container narrow">
+    <div class="page-header">
+        <h1><i class="bi bi-cart3"></i> Shopping Cart</h1>
+    </div>
+
+    {% if items %}
+    <div class="cart-layout">
+        <div class="cart-items">
+            {% for it in items %}
+            <div class="cart-item">
+                <div class="cart-item-emoji">{{ it.product.emoji }}</div>
+                <div class="cart-item-info">
+                    <h3>{{ it.product.name }}</h3>
+                    <p class="item-price">${{ "%.2f"|format(it.product.price) }} each</p>
+                </div>
+                <div class="cart-item-qty">
+                    <form action="{{ url_for('update_cart') }}" method="post" style="display:flex;gap:0.5rem;align-items:center">
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="pid" value="{{ it.product.id }}">
+                        <button name="action" value="dec" class="qty-btn"><i class="bi bi-dash"></i></button>
+                        <span class="qty">{{ it.qty }}</span>
+                        <button name="action" value="inc" class="qty-btn"><i class="bi bi-plus"></i></button>
+                    </form>
+                </div>
+                <div class="cart-item-total">
+                    <strong>${{ "%.2f"|format(it.line_total) }}</strong>
+                </div>
+                <form action="{{ url_for('update_cart') }}" method="post">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="pid" value="{{ it.product.id }}">
+                    <button name="action" value="remove" class="btn-remove"><i class="bi bi-trash"></i></button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="cart-summary">
+            <h2>Order Summary</h2>
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span>${{ "%.2f"|format(total) }}</span>
+            </div>
+            <div class="summary-row">
+                <span>Delivery</span>
+                <span class="free">FREE</span>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-row total">
+                <span>Total</span>
+                <span>${{ "%.2f"|format(total) }}</span>
+            </div>
+            <form action="{{ url_for('checkout') }}" method="post">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-primary btn-full">Place Order <i class="bi bi-check-lg"></i></button>
+            </form>
+            <a href="{{ url_for('shop') }}" class="btn-link"><i class="bi bi-arrow-left"></i> Continue Shopping</a>
+        </div>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">🛒</div>
+        <h2>Your cart is empty</h2>
+        <p>Add some fresh groceries to get started</p>
+        <a href="{{ url_for('shop') }}" class="btn btn-primary">Start Shopping <i class="bi bi-arrow-right"></i></a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

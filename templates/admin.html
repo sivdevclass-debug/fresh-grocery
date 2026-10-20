@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard - FreshGrocery{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="admin-header">
+        <h1><i class="bi bi-speedometer2"></i> Admin Dashboard</h1>
+        <p>Manage users, orders and sales</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon users"><i class="bi bi-people"></i></div>
+            <div class="stat-info">
+                <h3>{{ stats.users }}</h3>
+                <p>Total Users</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon orders"><i class="bi bi-cart-check"></i></div>
+            <div class="stat-info">
+                <h3>{{ stats.orders }}</h3>
+                <p>Total Orders</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon revenue"><i class="bi bi-currency-dollar"></i></div>
+            <div class="stat-info">
+                <h3>${{ "%.2f"|format(stats.revenue) }}</h3>
+                <p>Total Revenue</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-section">
+        <h2><i class="bi bi-people-fill"></i> User History</h2>
+        <div class="table-wrapper">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Joined</th>
+                        <th>Orders</th>
+                        <th>Spent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in users %}
+                    <tr>
+                        <td>#{{ u.id }}</td>
+                        <td><strong>{{ u.username }}</strong></td>
+                        <td>{{ u.email }}</td>
+                        <td>{% if u.is_admin %}<span class="badge badge-admin">Admin</span>{% else %}<span class="badge">User</span>{% endif %}</td>
+                        <td>{{ u.created_at[:10] }}</td>
+                        <td>{{ u.order_count }}</td>
+                        <td><strong>${{ "%.2f"|format(u.spent) }}</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="admin-section">
+        <h2><i class="bi bi-bag-check-fill"></i> All Items Bought</h2>
+        <div class="table-wrapper">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Order</th>
+                        <th>Customer</th>
+                        <th>Product</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Subtotal</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for b in bought %}
+                    <tr>
+                        <td>#{{ b.order_id }}</td>
+                        <td>{{ b.username }}</td>
+                        <td>{{ b.emoji }} {{ b.name }}</td>
+                        <td>{{ b.qty }}</td>
+                        <td>${{ "%.2f"|format(b.price) }}</td>
+                        <td><strong>${{ "%.2f"|format(b.subtotal) }}</strong></td>
+                        <td>{{ b.created_at[:10] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="admin-section">
+        <h2><i class="bi bi-trophy-fill"></i> Top Sellers</h2>
+        <div class="table-wrapper">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Units Sold</th>
+                        <th>Revenue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for b in bestsellers %}
+                    <tr>
+                        <td>{{ b.emoji }} {{ b.name }}</td>
+                        <td>{{ b.sold }}</td>
+                        <td><strong>${{ "%.2f"|format(b.revenue) }}</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

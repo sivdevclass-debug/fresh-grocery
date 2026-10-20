@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}My Orders - FreshGrocery{% endblock %}
+{% block content %}
+<div class="container narrow">
+    <div class="page-header">
+        <h1><i class="bi bi-receipt-cutoff"></i> My Orders</h1>
+        <p>Track your order history</p>
+    </div>
+
+    {% if orders %}
+        {% for entry in orders %}
+        <div class="order-card">
+            <div class="order-header">
+                <div>
+                    <h3>Order #{{ entry.order.id }}</h3>
+                    <p class="order-date"><i class="bi bi-calendar3"></i> {{ entry.order.created_at }}</p>
+                </div>
+                <div class="order-total">${{ "%.2f"|format(entry.order.total) }}</div>
+            </div>
+            <div class="order-items">
+                {% for it in entry['items'] %}
+                <div class="order-item">
+                    <span class="order-item-emoji">{{ it.emoji }}</span>
+                    <span class="order-item-name">{{ it.name }}</span>
+                    <span class="order-item-qty">x{{ it.qty }}</span>
+                    <span class="order-item-price">${{ "%.2f"|format(it.subtotal) }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">📦</div>
+        <h2>No orders yet</h2>
+        <p>Start shopping to place your first order</p>
+        <a href="{{ url_for('shop') }}" class="btn btn-primary">Shop Now <i class="bi bi-arrow-right"></i></a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
