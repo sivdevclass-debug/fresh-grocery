@@ -1,3 +1,4 @@
+
 # FreshGrocery
 
 A modern, responsive grocery shopping app. Works on **Windows, macOS, Linux, Android, and iOS** (via browser). Clean design with cart, order history, and admin dashboard.
@@ -95,3 +96,6 @@ Free & easy for public hosting:
 ## Data Storage
 
 All data is stored in `instance/grocery.db` (SQLite with WAL mode for cross-platform safety). Delete this file to reset everything.
+=======
+# fresh-grocery
+grocery website
